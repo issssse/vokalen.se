@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Vokalen",
-    "description": "Vokalen är en kör med varma konserter, tydlig klang och plats för både publik och medlemmar."
+    "description": "Vokalen är en kör med varma konserter, tydlig klang och plats för både publik och medlemmar. "
   },
   "contact": {
     "title": "Kontakt",
@@ -18,7 +18,7 @@
     "image": "/images/uploads/250506-f-oc707-7003-1-.png",
     "eyebrow": "Rubriken är liten",
     "title": "Här är det jag vill ha sagt.",
-    "intro": "Vi är bra.",
+    "intro": "Vi är bra. Men inte bäst!",
     "primaryCtaLabel": "En knapp",
     "primaryCtaHref": "vokalen.se",
     "secondaryCtaLabel": "En annan knapp",
