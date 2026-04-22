@@ -1,0 +1,18 @@
+{
+  "hero": {
+    "eyebrow": "Kör med nerv och värme",
+    "title": "Vi är en vokalensemble!",
+    "intro": "Vokalen är en ensemble som bygger konserter med precision, närvaro och energi.\n\nVi sjunger för att skapa kvällar som stannar kvar länge efter sista tonen.",
+    "ctaLabel": "Boka eller kontakta oss",
+    "ctaHref": "mailto:kontakt@vokalen.se",
+    "highlights": [
+      "Blandad repertoar",
+      "Konserter för kyrkor och scener",
+      "Plats för nya projekt"
+    ]
+  },
+  "about": {
+    "title": "Om oss",
+    "body": "Vokalen är en kör som vill låta ambitiöst utan att tappa värme. Vi arbetar med scenisk närvaro, text och klang som en helhet.\n\nHär kan ni senare skriva om dirigent, medlemmar, repertoar och var ni brukar framträda."
+  }
+}
