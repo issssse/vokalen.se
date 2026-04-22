@@ -13,5 +13,50 @@
   },
   "footer": {
     "note": "Vokalen.se drivs som en statisk webbplats med GitHub Pages och Static CMS. :D"
+  },
+  "hero": {
+    "image": "/images/uploads/250506-f-oc707-7003-1-.png",
+    "eyebrow": "Rubriken är liten",
+    "title": "Här är det jag vill ha sagt.",
+    "intro": "Vi är bra.",
+    "primaryCtaLabel": "En knapp",
+    "primaryCtaHref": "vokalen.se",
+    "secondaryCtaLabel": "En annan knapp",
+    "secondaryCtaHref": "vokalen.se",
+    "featured": {
+      "eyebrow": "EN HIGHLIGHT",
+      "title": "Detta är jätteviktigt!",
+      "date": "2020",
+      "location": "Uppsala",
+      "body": "Hejsansvejsan kom och lek mned ooss",
+      "buttonLabel": "knapp",
+      "buttonUrl": "vokalen.se"
+    }
+  },
+  "about": {
+    "title": "Hejsan!",
+    "body": "Detta är lite grejer om oss bara."
+  },
+  "header": {
+    "socialLinks": [
+      {
+        "label": "social länk",
+        "url": "vokalen.se"
+      }
+    ]
+  },
+  "agenda": {
+    "title": "En kalender",
+    "intro": "Lite info",
+    "items": [
+      {
+        "title": "En poster?",
+        "date": "1234",
+        "location": "Uppsala",
+        "description": "Beskrvningen är inte så lång.",
+        "buttonLabel": "Här har du en knapp!",
+        "buttonUrl": "vokalen.se"
+      }
+    ]
   }
 }
