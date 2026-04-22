@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "title": "Vokalen",
+    "description": "Vokalen är en kör med varma konserter, tydlig klang och plats för både publik och medlemmar."
+  },
+  "contact": {
+    "title": "Kontakt",
+    "body": "Här kan ni lägga in bokningsinformation, mejladress och sociala medier.\n\nOm ni vill kan ni senare peka er Gmail till kontakt@vokalen.se.",
+    "email": "kontakt@vokalen.se",
+    "emailLabel": "kontakt@vokalen.se",
+    "instagram": "https://instagram.com/",
+    "instagramLabel": "Öppna Instagram"
+  },
+  "footer": {
+    "note": "Vokalen.se drivs som en statisk webbplats med GitHub Pages och Static CMS. :D"
+  }
+}
