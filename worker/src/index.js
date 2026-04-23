@@ -22,6 +22,8 @@ const DEFAULT_CONTENT = {
       hero: {
         image: '',
         imageAlt: 'Vokalen under konsert',
+        imageFocusX: 50,
+        imageFocusY: 58,
         eyebrow: 'Varm klang. Tydlig närvaro.',
         title: 'Sång som känns i rummet.',
         intro: 'Vokalen är en vokalensemble som bygger konserter med precision, närvaro och energi. Vi sjunger för att skapa kvällar som stannar kvar länge efter sista tonen.',

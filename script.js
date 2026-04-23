@@ -1,6 +1,7 @@
 const CONTENT_URL = 'content/site.json';
 
 const elements = {
+  heroBanner: document.querySelector('.hero-banner'),
   heroImage: document.getElementById('hero-image'),
   heroImagePlaceholder: document.getElementById('hero-image-placeholder'),
   heroEyebrow: document.getElementById('hero-eyebrow'),
@@ -94,6 +95,65 @@ function applyImage(element, placeholder, url, alt = '') {
   element.alt = alt || '';
   element.classList.remove('hidden');
   placeholder.classList.add('hidden');
+}
+
+function clampPercent(value, fallback) {
+  const numericValue = Number.parseFloat(value);
+  if (!Number.isFinite(numericValue)) {
+    return fallback;
+  }
+
+  return Math.min(100, Math.max(0, numericValue));
+}
+
+function resetHeroImageFrame() {
+  if (!elements.heroBanner) {
+    return;
+  }
+
+  elements.heroBanner.style.removeProperty('--hero-media-ratio');
+  elements.heroBanner.style.removeProperty('--hero-focus-x');
+  elements.heroBanner.style.removeProperty('--hero-focus-y');
+  elements.heroBanner.removeAttribute('data-image-shape');
+}
+
+function updateHeroImageFrame(image, focusX, focusY) {
+  if (!elements.heroBanner) {
+    return;
+  }
+
+  elements.heroBanner.style.setProperty('--hero-focus-x', `${clampPercent(focusX, 50)}%`);
+  elements.heroBanner.style.setProperty('--hero-focus-y', `${clampPercent(focusY, 58)}%`);
+
+  const applyRatio = () => {
+    if (!image.naturalWidth || !image.naturalHeight) {
+      return;
+    }
+
+    const ratio = image.naturalWidth / image.naturalHeight;
+    const shape = ratio >= 1.7 ? 'wide' : ratio <= 1 ? 'portrait' : 'balanced';
+
+    elements.heroBanner.style.setProperty('--hero-media-ratio', `${image.naturalWidth} / ${image.naturalHeight}`);
+    elements.heroBanner.dataset.imageShape = shape;
+  };
+
+  if (image.complete) {
+    applyRatio();
+    return;
+  }
+
+  image.addEventListener('load', applyRatio, { once: true });
+}
+
+function applyHeroImage(url, alt = '', focusX, focusY) {
+  applyImage(elements.heroImage, elements.heroImagePlaceholder, url, alt);
+
+  if (!url) {
+    resetHeroImageFrame();
+    return;
+  }
+
+  updateHeroImageFrame(elements.heroImage, focusX, focusY);
 }
 
 function renderRichText(target, text = '') {
@@ -324,7 +384,12 @@ function applySiteData(data) {
     description.setAttribute('content', data.meta.description);
   }
 
-  applyImage(elements.heroImage, elements.heroImagePlaceholder, data.hero?.image || '', data.hero?.imageAlt || '');
+  applyHeroImage(
+    data.hero?.image || '',
+    data.hero?.imageAlt || '',
+    data.hero?.imageFocusX,
+    data.hero?.imageFocusY,
+  );
   elements.heroEyebrow.textContent = data.hero?.eyebrow || 'Vokalen';
   elements.heroTitle.textContent = data.hero?.title || 'Vokalen';
   renderRichText(elements.heroIntro, data.hero?.intro || '');

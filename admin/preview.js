@@ -55,6 +55,15 @@ function normalizeHref(value = '') {
   return href;
 }
 
+function clampPercent(value, fallback) {
+  const numericValue = Number.parseFloat(value);
+  if (!Number.isFinite(numericValue)) {
+    return fallback;
+  }
+
+  return Math.min(100, Math.max(0, numericValue));
+}
+
 function isExternalHref(value = '') {
   return /^https?:\/\//i.test(value);
 }
@@ -82,6 +91,10 @@ function renderSocialLinks(items = []) {
     .filter((item) => item?.label && normalizeHref(item?.url))
     .map((item) => `<a class="social-text-link" ${buildLinkAttributes(item.url)}>${escapeHtml(item.label)}</a>`)
     .join('');
+}
+
+function buildHeroBannerStyle(hero = {}) {
+  return `style="--hero-focus-x: ${clampPercent(hero.imageFocusX, 50)}%; --hero-focus-y: ${clampPercent(hero.imageFocusY, 58)}%;"`;
 }
 
 function getPrimarySocialLink(data) {
@@ -264,7 +277,7 @@ function buildPreviewHtml(data) {
 
       <main id="hem">
         <section class="hero-section section-frame">
-          <div class="hero-banner organic-divider">
+          <div class="hero-banner organic-divider" ${buildHeroBannerStyle(data.hero || {})}>
             ${heroImageMarkup}
           </div>
 
@@ -360,6 +373,32 @@ function buildPreviewHtml(data) {
         </div>
       </footer>
     </div>
+    <script>
+      (() => {
+        const banner = document.querySelector('.hero-banner');
+        const image = document.querySelector('.hero-banner-image');
+
+        if (!banner || !image) {
+          return;
+        }
+
+        const applyRatio = () => {
+          if (!image.naturalWidth || !image.naturalHeight) {
+            return;
+          }
+
+          const ratio = image.naturalWidth / image.naturalHeight;
+          banner.style.setProperty('--hero-media-ratio', image.naturalWidth + ' / ' + image.naturalHeight);
+          banner.dataset.imageShape = ratio >= 1.7 ? 'wide' : ratio <= 1 ? 'portrait' : 'balanced';
+        };
+
+        if (image.complete) {
+          applyRatio();
+        } else {
+          image.addEventListener('load', applyRatio, { once: true });
+        }
+      })();
+    </script>
   </body>
 </html>`;
 }
