@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vokalen Admin</title>
+    <link rel="stylesheet" href="https://unpkg.com/@staticcms/app@^4.0.0/dist/main.css" />
+    <link rel="stylesheet" href="./admin.css" />
+    <script src="https://unpkg.com/@staticcms/app@^4.0.0/dist/static-cms-app.js"></script>
+  </head>
+  <body>
+    <section class="login-screen" id="login-screen">
+      <form class="login-card" id="login-form">
+        <h1 class="login-title">Vokalen</h1>
+        <p class="login-text">Logga in för att redigera hemsidan.</p>
+        <label class="sr-only" for="password">Lösenord</label>
+        <input id="password" name="password" type="password" placeholder="Lösenord" autocomplete="current-password" required />
+        <button type="submit">Logga in</button>
+        <p class="status" id="login-status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <div class="cms-root hidden" id="nc-root"></div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

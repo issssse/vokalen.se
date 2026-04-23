@@ -3,22 +3,103 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Vokalen.se</title>
-    <meta name="description" content="Vokalen.se är online via GitHub Pages." />
+    <title>Vokalen</title>
+    <meta
+      name="description"
+      content="Vokalen är en vokalensemble med varm klang, närvaro och konserter som stannar kvar."
+    />
     <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="script.js"></script>
   </head>
-  <!DOCTYPE html>
-<body>
+  <body>
+    <div class="site-shell">
+      <header class="site-header" id="top">
+        <a class="wordmark" href="#top" aria-label="Vokalen, tillbaka till toppen">Vokalen</a>
 
-    <div class="container">
-        <p class="highlight">Nu har jag köpt Vokalen.se :D</p>
-        <p>
-            Kostade 11 kr, kommer ha den i ett år. Vet inte vad vi ska ha här, 
-            men ville paxa domänen. Vi kommer också kunna länka våran 
-            vokalen-gmail till kontakt@vokalen.se om vi vill.
-        </p>
+        <div class="header-right">
+          <nav class="site-nav" aria-label="Huvudmeny">
+            <a href="#about">Om oss</a>
+            <a href="#agenda">Kalender</a>
+            <a href="#contact">Kontakt</a>
+          </nav>
+
+          <div class="header-socials" id="header-socials" aria-label="Sociala medier"></div>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero-media">
+          <div class="hero-image-wrap">
+            <img class="hero-image hidden" id="hero-image" alt="" />
+            <div class="hero-image-placeholder" id="hero-image-placeholder">
+              <span>Stor ensemblebild</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="hero-copy">
+          <div class="hero-main">
+            <p class="eyebrow" id="hero-eyebrow">Laddar innehåll…</p>
+            <h1 id="hero-title">Vokalen</h1>
+            <div class="rich-text intro" id="hero-intro"></div>
+
+            <div class="hero-actions">
+              <a class="button button-primary" id="hero-primary-cta" href="#contact">Boka eller kontakta oss</a>
+              <a class="button button-secondary" id="hero-secondary-cta" href="#agenda">Se kalendern</a>
+            </div>
+          </div>
+
+          <aside class="highlight-card" aria-label="Aktuellt">
+            <p class="card-kicker" id="featured-eyebrow">Aktuellt</p>
+            <h2 id="featured-title">Kommande konsert</h2>
+            <p class="card-meta" id="featured-date"></p>
+            <p class="card-meta" id="featured-location"></p>
+            <p class="card-body" id="featured-body"></p>
+            <a class="button button-light hidden" id="featured-link" href="#" target="_blank" rel="noreferrer">Läs mer</a>
+          </aside>
+        </section>
+
+        <section class="section" id="about">
+          <div class="section-heading">
+            <p class="section-kicker">Om oss</p>
+            <h2 id="about-title">Om oss</h2>
+          </div>
+          <div class="rich-text section-copy" id="about-body"></div>
+        </section>
+
+        <section class="section" id="agenda">
+          <div class="section-header split">
+            <div>
+              <p class="section-kicker">Kalender</p>
+              <h2 id="agenda-title">Kalender & agenda</h2>
+            </div>
+            <p class="section-intro" id="agenda-intro"></p>
+          </div>
+
+          <div class="agenda-list" id="agenda-list"></div>
+        </section>
+
+        <section class="contact-section" id="contact">
+          <div class="section-heading">
+            <p class="section-kicker">Kontakt</p>
+            <h2 id="contact-title">Kontakt</h2>
+          </div>
+
+          <div class="contact-grid">
+            <div class="rich-text section-copy" id="contact-body"></div>
+
+            <div class="contact-card">
+              <a class="contact-email" id="contact-email" href="mailto:kontakt@vokalen.se">kontakt@vokalen.se</a>
+              <div class="contact-socials" id="contact-socials"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p id="footer-note">Vokalen</p>
+        <a href="/admin/">Admin</a>
+      </footer>
     </div>
-
-</body>
-</html>
+  </body>
 </html>

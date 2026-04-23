@@ -1,0 +1,92 @@
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: #f6f6f6;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.login-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.login-card {
+  width: min(100%, 24rem);
+  padding: 1.5rem;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+}
+
+.login-title {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.login-text {
+  margin: 0.5rem 0 1rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+.login-card input,
+.login-card button {
+  width: 100%;
+  min-height: 46px;
+  font: inherit;
+}
+
+.login-card input {
+  padding: 0.75rem 0.9rem;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 10px;
+}
+
+.login-card button {
+  border: 0;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+}
+
+.login-card button {
+  margin-top: 0.8rem;
+}
+
+.status {
+  min-height: 1.25rem;
+  margin: 0.8rem 0 0;
+  color: #555;
+}
+
+.status.error {
+  color: #b42318;
+}
+
+.cms-root {
+  min-height: 100vh;
+}

@@ -1,14 +1,14 @@
 {
   "meta": {
     "title": "Vokalen",
-    "description": "Vokalen är en kör med varma konserter, tydlig klang och plats för både publik och medlemmar. "
+    "description": "Vokalen är en kör med varma konserter, tydlig klang och plats för både publik och medlemmar."
   },
   "contact": {
     "title": "Kontakt",
     "body": "Om du har några frågor eller är intresserad av att boka oss för ett uppdrag, så skicka ett mejl till kontakt@vokalen.se! Vi är flexibla och skulle älska att få sjunga på din tillställning.",
     "email": "kontakt@vokalen.se",
     "emailLabel": "kontakt@vokalen.se",
-    "instagram": "https://instagram.com/",
+    "instagram": "https://www.instagram.com/vokalen9/",
     "instagramLabel": "Öppna Instagram"
   },
   "footer": {
@@ -16,6 +16,7 @@
   },
   "hero": {
     "image": "/images/uploads/received_1469937901295429.jpeg",
+    "imageAlt": "Vokalen samlade runt ett bord",
     "eyebrow": "en till vokalensemble i uppsala!",
     "title": "Hejsan!",
     "intro": "Vi är en nystartad vokalensemble baserad i uppsala. Vi grundades november 2025 och består av 9 glada sångare! Kontakta oss direkt om du vill veta mer eller har några frågor.",
@@ -40,8 +41,8 @@
   "header": {
     "socialLinks": [
       {
-        "label": "social länk",
-        "url": "vokalen.se"
+        "label": "Instagram",
+        "url": "https://www.instagram.com/vokalen9/"
       }
     ]
   },
