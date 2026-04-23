@@ -1,12 +1,13 @@
 const CONTENT_URL = 'content/site.json';
+const MOBILE_MENU_BREAKPOINT = 900;
 
 const elements = {
   siteHeader: document.querySelector('.site-header'),
-  siteNavShell: document.querySelector('.site-nav-shell'),
-  heroSection: document.querySelector('.hero-section'),
   heroBanner: document.querySelector('.hero-banner'),
   heroImage: document.getElementById('hero-image'),
   heroImagePlaceholder: document.getElementById('hero-image-placeholder'),
+  menuToggle: document.getElementById('menu-toggle'),
+  navLinks: document.getElementById('site-nav-links'),
   headerLogoImage: document.getElementById('header-logo-image'),
   headerLogoFallback: document.getElementById('header-logo-fallback'),
   headerBrandName: document.getElementById('header-brand-name'),
@@ -44,10 +45,6 @@ const elements = {
   footerNote: document.getElementById('footer-note'),
 };
 
-const scrollState = {
-  ticking: false,
-};
-
 function escapeHtml(value = '') {
   return String(value)
     .replaceAll('&', '&amp;')
@@ -59,10 +56,6 @@ function escapeHtml(value = '') {
 
 function hasTextContent(value = '') {
   return String(value || '').trim().length > 0;
-}
-
-function clamp01(value) {
-  return Math.min(1, Math.max(0, value));
 }
 
 function normalizeHref(value = '') {
@@ -120,6 +113,24 @@ function applyImage(element, placeholder, url, alt = '') {
   placeholder.classList.add('hidden');
 }
 
+function applyImageHints(element, { loading, decoding = 'async', fetchPriority } = {}) {
+  if (!element) {
+    return;
+  }
+
+  if (loading) {
+    element.loading = loading;
+  }
+
+  if (decoding) {
+    element.decoding = decoding;
+  }
+
+  if (fetchPriority) {
+    element.fetchPriority = fetchPriority;
+  }
+}
+
 function applyImageWithoutPlaceholder(element, container, url, alt = '') {
   if (!element || !container) {
     return;
@@ -156,82 +167,59 @@ function resetHeroImageFrame() {
     return;
   }
 
-  elements.heroBanner.style.removeProperty('--hero-media-ratio');
   elements.heroBanner.style.removeProperty('--hero-focus-x');
   elements.heroBanner.style.removeProperty('--hero-focus-y');
-  elements.heroBanner.removeAttribute('data-image-shape');
 }
 
-function updateHeroImageFrame(image, focusX, focusY) {
+function updateHeroImageFrame(focusX, focusY) {
   if (!elements.heroBanner) {
     return;
   }
 
   elements.heroBanner.style.setProperty('--hero-focus-x', `${clampPercent(focusX, 50)}%`);
   elements.heroBanner.style.setProperty('--hero-focus-y', `${clampPercent(focusY, 58)}%`);
-
-  const applyRatio = () => {
-    if (!image.naturalWidth || !image.naturalHeight) {
-      return;
-    }
-
-    const ratio = image.naturalWidth / image.naturalHeight;
-    const shape = ratio >= 1.7 ? 'wide' : ratio <= 1 ? 'portrait' : 'balanced';
-
-    elements.heroBanner.style.setProperty('--hero-media-ratio', `${image.naturalWidth} / ${image.naturalHeight}`);
-    elements.heroBanner.dataset.imageShape = shape;
-  };
-
-  if (image.complete) {
-    applyRatio();
-    return;
-  }
-
-  image.addEventListener('load', applyRatio, { once: true });
 }
 
 function applyHeroImage(url, alt = '', focusX, focusY) {
   applyImage(elements.heroImage, elements.heroImagePlaceholder, url, alt);
+  applyImageHints(elements.heroImage, {
+    loading: 'eager',
+    decoding: 'async',
+    fetchPriority: 'high',
+  });
 
   if (!url) {
     resetHeroImageFrame();
     return;
   }
 
-  updateHeroImageFrame(elements.heroImage, focusX, focusY);
+  updateHeroImageFrame(focusX, focusY);
 }
 
-function syncHeaderHeight() {
-  const headerHeight = elements.siteHeader?.offsetHeight || elements.siteNavShell?.offsetHeight || 80;
-  document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
-}
-
-function syncScrollEffects() {
-  scrollState.ticking = false;
-
-  const headerProgress = clamp01(window.scrollY / 176);
-  document.documentElement.style.setProperty('--header-progress', headerProgress.toFixed(3));
-
-  if (!elements.heroSection) {
-    document.documentElement.style.setProperty('--hero-progress', '0');
+function closeMenu() {
+  if (!elements.siteHeader || !elements.menuToggle) {
     return;
   }
 
-  const heroTop = window.scrollY + elements.heroSection.getBoundingClientRect().top;
-  const heroStart = Math.max(0, heroTop - 72);
-  const heroDistance = Math.max(window.innerHeight * 0.86, 420);
-  const heroProgress = clamp01((window.scrollY - heroStart) / heroDistance);
-
-  document.documentElement.style.setProperty('--hero-progress', heroProgress.toFixed(3));
+  elements.siteHeader.classList.remove('is-menu-open');
+  elements.menuToggle.setAttribute('aria-expanded', 'false');
+  elements.menuToggle.setAttribute('aria-label', 'Öppna meny');
 }
 
-function scheduleScrollEffects() {
-  if (scrollState.ticking) {
+function toggleMenu() {
+  if (!elements.siteHeader || !elements.menuToggle) {
     return;
   }
 
-  scrollState.ticking = true;
-  window.requestAnimationFrame(syncScrollEffects);
+  const isOpen = elements.siteHeader.classList.toggle('is-menu-open');
+  elements.menuToggle.setAttribute('aria-expanded', String(isOpen));
+  elements.menuToggle.setAttribute('aria-label', isOpen ? 'Stäng meny' : 'Öppna meny');
+}
+
+function syncMenuForViewport() {
+  if (window.innerWidth > MOBILE_MENU_BREAKPOINT) {
+    closeMenu();
+  }
 }
 
 function renderRichText(target, text = '') {
@@ -425,6 +413,10 @@ function renderGallery(data) {
     image.className = 'gallery-image';
     image.src = item.image;
     image.alt = item.imageAlt || '';
+    applyImageHints(image, {
+      loading: 'lazy',
+      decoding: 'async',
+    });
     card.appendChild(image);
 
     elements.galleryGrid.appendChild(card);
@@ -518,6 +510,10 @@ function applySiteData(data) {
   elements.aboutTitle.textContent = data.about?.title || 'Om oss';
   renderRichText(elements.aboutBody, data.about?.body || '');
   applyImage(elements.aboutImage, elements.aboutImagePlaceholder, data.about?.image || '', data.about?.imageAlt || '');
+  applyImageHints(elements.aboutImage, {
+    loading: 'lazy',
+    decoding: 'async',
+  });
 
   if (hasTextContent(data.about?.badgeText)) {
     elements.aboutBadge.textContent = String(data.about.badgeText).trim();
@@ -533,6 +529,10 @@ function applySiteData(data) {
   elements.agendaIntro.textContent = data.agenda?.intro || '';
   renderAgenda(data.agenda?.items || []);
   applyImageWithoutPlaceholder(elements.agendaMarkImage, elements.agendaMark, data.agenda?.markImage || '', '');
+  applyImageHints(elements.agendaMarkImage, {
+    loading: 'lazy',
+    decoding: 'async',
+  });
 
   elements.contactTitle.textContent = data.contact?.title || 'Kontakt';
   renderRichText(elements.contactBody, data.contact?.body || '');
@@ -568,16 +568,13 @@ async function loadSiteData() {
   }
 }
 
-window.addEventListener('scroll', scheduleScrollEffects, { passive: true });
-window.addEventListener('resize', () => {
-  syncHeaderHeight();
-  scheduleScrollEffects();
-});
-window.addEventListener('load', () => {
-  syncHeaderHeight();
-  scheduleScrollEffects();
+elements.menuToggle?.addEventListener('click', toggleMenu);
+elements.navLinks?.querySelectorAll('a').forEach((link) => {
+  link.addEventListener('click', closeMenu);
 });
 
-syncHeaderHeight();
-scheduleScrollEffects();
+window.addEventListener('resize', syncMenuForViewport);
+window.addEventListener('load', syncMenuForViewport);
+syncMenuForViewport();
+
 loadSiteData();

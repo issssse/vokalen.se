@@ -284,7 +284,19 @@ function buildPreviewHtml(data) {
           </a>
 
           <div class="nav-cluster">
-            <div class="nav-links">
+            <button
+              class="menu-toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="site-nav-links"
+              aria-label="Öppna meny"
+            >
+              <span class="menu-toggle-bar"></span>
+              <span class="menu-toggle-bar"></span>
+              <span class="menu-toggle-bar"></span>
+            </button>
+
+            <div class="nav-links" id="site-nav-links">
               <a href="#om-oss">Om oss</a>
               <a href="#kalender">Kalender</a>
               <a href="#kontakt">Kontakt</a>
@@ -392,70 +404,42 @@ function buildPreviewHtml(data) {
     </div>
     <script>
       (() => {
-        const root = document.documentElement;
         const siteHeader = document.querySelector('.site-header');
-        const siteNavShell = document.querySelector('.site-nav-shell');
-        const heroSection = document.querySelector('.hero-section');
-        const banner = document.querySelector('.hero-banner');
-        const image = document.querySelector('.hero-banner-image');
-
-        const clamp01 = (value) => Math.min(1, Math.max(0, value));
-
-        const syncHeaderHeight = () => {
-          const headerHeight = (siteHeader && siteHeader.offsetHeight) || (siteNavShell && siteNavShell.offsetHeight) || 80;
-          root.style.setProperty('--header-height', headerHeight + 'px');
-        };
-
-        const syncScrollEffects = () => {
-          root.style.setProperty('--header-progress', clamp01(window.scrollY / 176).toFixed(3));
-
-          if (!heroSection) {
-            root.style.setProperty('--hero-progress', '0');
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('#site-nav-links');
+        const closeMenu = () => {
+          if (!siteHeader || !menuToggle) {
             return;
           }
 
-          const heroTop = window.scrollY + heroSection.getBoundingClientRect().top;
-          const heroStart = Math.max(0, heroTop - 72);
-          const heroDistance = Math.max(window.innerHeight * 0.86, 420);
-          const heroProgress = clamp01((window.scrollY - heroStart) / heroDistance);
-
-          root.style.setProperty('--hero-progress', heroProgress.toFixed(3));
+          siteHeader.classList.remove('is-menu-open');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          menuToggle.setAttribute('aria-label', 'Öppna meny');
         };
 
-        if (!banner || !image) {
-          syncHeaderHeight();
-          syncScrollEffects();
-          window.addEventListener('scroll', syncScrollEffects, { passive: true });
-          window.addEventListener('resize', () => {
-            syncHeaderHeight();
-            syncScrollEffects();
-          });
-          return;
-        }
+        const syncMenuForViewport = () => {
+          if (window.innerWidth > 900) {
+            closeMenu();
+          }
+        };
 
-        const applyRatio = () => {
-          if (!image.naturalWidth || !image.naturalHeight) {
+        menuToggle?.addEventListener('click', () => {
+          if (!siteHeader || !menuToggle) {
             return;
           }
 
-          const ratio = image.naturalWidth / image.naturalHeight;
-          banner.style.setProperty('--hero-media-ratio', image.naturalWidth + ' / ' + image.naturalHeight);
-          banner.dataset.imageShape = ratio >= 1.7 ? 'wide' : ratio <= 1 ? 'portrait' : 'balanced';
-        };
-
-        if (image.complete) {
-          applyRatio();
-        } else {
-          image.addEventListener('load', applyRatio, { once: true });
-        }
-
-        syncHeaderHeight();
-        syncScrollEffects();
-        window.addEventListener('scroll', syncScrollEffects, { passive: true });
-        window.addEventListener('resize', () => {
-          syncHeaderHeight();
-          syncScrollEffects();
+          const isOpen = siteHeader.classList.toggle('is-menu-open');
+          menuToggle.setAttribute('aria-expanded', String(isOpen));
+          menuToggle.setAttribute('aria-label', isOpen ? 'Stäng meny' : 'Öppna meny');
         });
+
+        navLinks?.querySelectorAll('a').forEach((link) => {
+          link.addEventListener('click', closeMenu);
+        });
+
+        window.addEventListener('resize', syncMenuForViewport);
+        window.addEventListener('load', syncMenuForViewport);
+        syncMenuForViewport();
       })();
     </script>
   </body>
