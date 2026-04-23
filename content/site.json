@@ -15,8 +15,8 @@
     "note": "Vokalen.se drivs som en statisk webbplats med GitHub Pages och Static CMS. Skapad av oss!"
   },
   "hero": {
-    "image": "/images/uploads/received_1469937901295429.jpeg",
-    "imageAlt": "Vokalen samlade runt ett bord",
+    "image": "/images/uploads/ensemble-toast.jpeg",
+    "imageAlt": "Vokalensemblen Vokalen skålar runt ett bord",
     "eyebrow": "en till vokalensemble i uppsala!",
     "title": "Hejsan!",
     "intro": "Vi är en nystartad vokalensemble baserad i uppsala. Vi grundades november 2025 och består av 9 glada sångare! Kontakta oss direkt om du vill veta mer eller har några frågor.",
@@ -36,7 +36,22 @@
   },
   "about": {
     "title": "Inte mycket historia... än!",
-    "body": "Vokalensemblen består av Ellen Skoog, Matilda Skeri, Sofie Olsson, Tuva Valman, Tyra Sund, Benjamin Winninge, David Svärd, Isac Carlsson, samt Joel Sarkadi Kristiansson. Fastän vi inte existerat länge har vi redan fått uppdrag att sjunga på ett par fester/konferenser. Att folk tycker om vad vi tycker så mycket om att skapa är jätterkul för oss, varför vi har beslutat att hålla en vårkonsert i juni. "
+    "body": "Vokalensemblen består av Ellen Skoog, Matilda Skeri, Sofie Olsson, Tuva Valman, Tyra Sund, Benjamin Winninge, David Svärd, Isac Carlsson, samt Joel Sarkadi Kristiansson.\n\nFastän vi inte existerat länge har vi redan fått uppdrag att sjunga på ett par fester och konferenser. Att folk tycker om vad vi tycker så mycket om att skapa är jätterkul för oss, varför vi har beslutat att hålla en vårkonsert i juni.",
+    "image": "/images/uploads/sheet-music.webp",
+    "imageAlt": "Närbild på noter",
+    "badgeText": "Sång gemenskap glädje"
+  },
+  "gallery": {
+    "images": [
+      {
+        "image": "/images/uploads/mirror-group.jpeg",
+        "imageAlt": "Delar av Vokalen tar en spegelbild"
+      },
+      {
+        "image": "/images/uploads/outside-group.jpg",
+        "imageAlt": "Vokalen utanför ett tegelhus i Uppsala"
+      }
+    ]
   },
   "header": {
     "socialLinks": [

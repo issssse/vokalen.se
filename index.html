@@ -12,93 +12,161 @@
     <script type="module" src="script.js"></script>
   </head>
   <body>
-    <div class="site-shell">
-      <header class="site-header" id="top">
-        <a class="wordmark" href="#top" aria-label="Vokalen, tillbaka till toppen">Vokalen</a>
+    <div class="page-shell">
+      <header class="site-header">
+        <nav class="site-nav-shell" aria-label="Huvudnavigering">
+          <a class="brand" href="#hem" aria-label="Vokalen startsida">
+            <svg viewBox="0 0 70 92" aria-hidden="true" class="brand-mark">
+              <path d="M34 88C33 61 34 34 35 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+              <path d="M36 21C50 12 58 11 64 14C59 27 49 31 37 29" fill="currentColor" opacity=".72" />
+              <path d="M34 39C18 27 9 27 4 31C10 45 22 48 34 46" fill="currentColor" opacity=".55" />
+              <path d="M35 58C52 47 61 48 66 53C59 67 48 70 36 65" fill="currentColor" opacity=".42" />
+              <path d="M32 75C18 65 9 66 4 70C10 82 21 85 32 81" fill="currentColor" opacity=".55" />
+            </svg>
+            <span class="brand-wordmark">Vokalen</span>
+          </a>
 
-        <div class="header-right">
-          <nav class="site-nav" aria-label="Huvudmeny">
-            <a href="#about">Om oss</a>
-            <a href="#agenda">Kalender</a>
-            <a href="#contact">Kontakt</a>
-          </nav>
+          <div class="nav-cluster">
+            <div class="nav-links">
+              <a href="#om-oss">Om oss</a>
+              <a href="#kalender">Kalender</a>
+              <a href="#kontakt">Kontakt</a>
+            </div>
 
-          <div class="header-socials" id="header-socials" aria-label="Sociala medier"></div>
-        </div>
+            <div class="social-strip">
+              <div class="social-text-links" id="header-socials" aria-label="Sociala länkar"></div>
+
+              <a class="social-icon-button hidden" id="header-social-icon" href="#" aria-label="Social länk">
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="social-icon">
+                  <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8" />
+                  <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8" />
+                  <circle cx="17.3" cy="6.7" r="1.2" fill="currentColor" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </nav>
       </header>
 
-      <main>
-        <section class="hero-media">
-          <div class="hero-image-wrap">
-            <img class="hero-image hidden" id="hero-image" alt="" />
+      <main id="hem">
+        <section class="hero-section section-frame">
+          <div class="hero-banner organic-divider">
+            <img class="hero-banner-image hidden" id="hero-image" alt="" />
             <div class="hero-image-placeholder" id="hero-image-placeholder">
               <span>Stor ensemblebild</span>
             </div>
           </div>
-        </section>
 
-        <section class="hero-copy">
-          <div class="hero-main">
-            <p class="eyebrow" id="hero-eyebrow">Laddar innehåll…</p>
-            <h1 id="hero-title">Vokalen</h1>
-            <div class="rich-text intro" id="hero-intro"></div>
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <p class="script-kicker" id="hero-eyebrow">Laddar innehåll…</p>
+              <h1 id="hero-title">Vokalen</h1>
+              <div class="body-copy lead-copy" id="hero-intro"></div>
 
-            <div class="hero-actions">
-              <a class="button button-primary" id="hero-primary-cta" href="#contact">Boka eller kontakta oss</a>
-              <a class="button button-secondary" id="hero-secondary-cta" href="#agenda">Se kalendern</a>
+              <div class="button-row">
+                <a class="button button-primary" id="hero-primary-cta" href="#kontakt">Boka eller kontakta oss</a>
+                <a class="button button-secondary" id="hero-secondary-cta" href="#kontakt">Se mer</a>
+              </div>
             </div>
-          </div>
 
-          <aside class="highlight-card" aria-label="Aktuellt">
-            <p class="card-kicker" id="featured-eyebrow">Aktuellt</p>
-            <h2 id="featured-title">Kommande konsert</h2>
-            <p class="card-meta" id="featured-date"></p>
-            <p class="card-meta" id="featured-location"></p>
-            <p class="card-body" id="featured-body"></p>
-            <a class="button button-light hidden" id="featured-link" href="#" target="_blank" rel="noreferrer">Läs mer</a>
-          </aside>
+            <article class="highlight-panel">
+              <p class="section-kicker highlight-kicker" id="featured-eyebrow">Nyhet!</p>
+              <h2 id="featured-title">Kommande konsert</h2>
+              <p class="highlight-date" id="featured-date"></p>
+              <p class="highlight-location" id="featured-location"></p>
+              <p class="highlight-body" id="featured-body"></p>
+              <a class="button button-highlight hidden" id="featured-link" href="#">Mer info</a>
+            </article>
+          </div>
         </section>
 
-        <section class="section" id="about">
-          <div class="section-heading">
+        <section class="about-section section-frame" id="om-oss">
+          <div class="about-copy">
             <p class="section-kicker">Om oss</p>
             <h2 id="about-title">Om oss</h2>
+            <div class="section-rule" aria-hidden="true"></div>
+            <div class="body-copy" id="about-body"></div>
           </div>
-          <div class="rich-text section-copy" id="about-body"></div>
-        </section>
 
-        <section class="section" id="agenda">
-          <div class="section-header split">
-            <div>
-              <p class="section-kicker">Kalender</p>
-              <h2 id="agenda-title">Kalender & agenda</h2>
+          <div class="about-visual">
+            <img class="about-image hidden hover-lift" id="about-image" alt="" />
+            <div class="about-image-placeholder" id="about-image-placeholder">
+              <span>Bild från repetition eller konsert</span>
             </div>
-            <p class="section-intro" id="agenda-intro"></p>
+            <div class="about-badge" id="about-badge">Sång gemenskap glädje</div>
           </div>
-
-          <div class="agenda-list" id="agenda-list"></div>
         </section>
 
-        <section class="contact-section" id="contact">
-          <div class="section-heading">
-            <p class="section-kicker">Kontakt</p>
-            <h2 id="contact-title">Kontakt</h2>
+        <section class="gallery-section section-frame" aria-label="Bildgalleri">
+          <div class="gallery-grid" id="gallery-grid"></div>
+        </section>
+
+        <section class="agenda-section" id="kalender">
+          <div class="section-frame agenda-grid">
+            <div class="agenda-copy">
+              <p class="section-kicker">Kalender</p>
+              <h2 id="agenda-title">Vår agenda</h2>
+              <p class="agenda-intro" id="agenda-intro"></p>
+              <div class="agenda-cards" id="agenda-list"></div>
+            </div>
+
+            <div class="agenda-mark" aria-hidden="true">
+              <div class="agenda-mark-circle">
+                <svg viewBox="0 0 24 24" class="calendar-icon">
+                  <path d="M7 2v4M17 2v4M4 9h16M6 5h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <svg viewBox="0 0 70 92" class="agenda-mark-plant">
+                  <path d="M34 88C33 61 34 34 35 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+                  <path d="M36 21C50 12 58 11 64 14C59 27 49 31 37 29" fill="currentColor" opacity=".72" />
+                  <path d="M34 39C18 27 9 27 4 31C10 45 22 48 34 46" fill="currentColor" opacity=".55" />
+                  <path d="M35 58C52 47 61 48 66 53C59 67 48 70 36 65" fill="currentColor" opacity=".42" />
+                  <path d="M32 75C18 65 9 66 4 70C10 82 21 85 32 81" fill="currentColor" opacity=".55" />
+                </svg>
+              </div>
+            </div>
           </div>
+        </section>
 
-          <div class="contact-grid">
-            <div class="rich-text section-copy" id="contact-body"></div>
+        <section class="contact-section section-frame" id="kontakt">
+          <div class="contact-panel">
+            <div class="contact-panel-left">
+              <svg viewBox="0 0 24 24" class="mail-icon" aria-hidden="true">
+                <path d="M4 6h16v12H4z" fill="none" stroke="currentColor" stroke-width="1.8" />
+                <path d="m5 7 7 6 7-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <p class="section-kicker contact-kicker">Kontakt</p>
+              <h2 id="contact-title">Kontakt</h2>
+              <div class="body-copy contact-body" id="contact-body"></div>
+            </div>
 
-            <div class="contact-card">
-              <a class="contact-email" id="contact-email" href="mailto:kontakt@vokalen.se">kontakt@vokalen.se</a>
-              <div class="contact-socials" id="contact-socials"></div>
+            <div class="contact-panel-right">
+              <div>
+                <p class="contact-helper">Skicka ett mejl till oss</p>
+                <a class="contact-email" id="contact-email" href="mailto:kontakt@vokalen.se">kontakt@vokalen.se</a>
+              </div>
+
+              <a class="button button-secondary hidden" id="contact-social-link" href="#">Social länk</a>
             </div>
           </div>
         </section>
       </main>
 
       <footer class="site-footer">
-        <p id="footer-note">Vokalen</p>
-        <a href="/admin/">Admin</a>
+        <div class="footer-inner">
+          <a class="brand footer-brand" href="#hem" aria-label="Tillbaka till toppen">
+            <svg viewBox="0 0 70 92" aria-hidden="true" class="brand-mark">
+              <path d="M34 88C33 61 34 34 35 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+              <path d="M36 21C50 12 58 11 64 14C59 27 49 31 37 29" fill="currentColor" opacity=".72" />
+              <path d="M34 39C18 27 9 27 4 31C10 45 22 48 34 46" fill="currentColor" opacity=".55" />
+              <path d="M35 58C52 47 61 48 66 53C59 67 48 70 36 65" fill="currentColor" opacity=".42" />
+              <path d="M32 75C18 65 9 66 4 70C10 82 21 85 32 81" fill="currentColor" opacity=".55" />
+            </svg>
+            <span class="brand-wordmark">Vokalen</span>
+          </a>
+
+          <p class="footer-note" id="footer-note">Vokalen</p>
+          <a class="footer-admin" href="/admin/">Admin</a>
+        </div>
       </footer>
     </div>
   </body>

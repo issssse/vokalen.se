@@ -1,3 +1,34 @@
+const BOTANICAL_MARKUP = `
+  <svg viewBox="0 0 70 92" aria-hidden="true" class="brand-mark">
+    <path d="M34 88C33 61 34 34 35 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+    <path d="M36 21C50 12 58 11 64 14C59 27 49 31 37 29" fill="currentColor" opacity=".72" />
+    <path d="M34 39C18 27 9 27 4 31C10 45 22 48 34 46" fill="currentColor" opacity=".55" />
+    <path d="M35 58C52 47 61 48 66 53C59 67 48 70 36 65" fill="currentColor" opacity=".42" />
+    <path d="M32 75C18 65 9 66 4 70C10 82 21 85 32 81" fill="currentColor" opacity=".55" />
+  </svg>
+`;
+
+const INSTAGRAM_ICON = `
+  <svg viewBox="0 0 24 24" aria-hidden="true" class="social-icon">
+    <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8" />
+    <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8" />
+    <circle cx="17.3" cy="6.7" r="1.2" fill="currentColor" />
+  </svg>
+`;
+
+const CALENDAR_ICON = `
+  <svg viewBox="0 0 24 24" class="calendar-icon">
+    <path d="M7 2v4M17 2v4M4 9h16M6 5h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+`;
+
+const MAIL_ICON = `
+  <svg viewBox="0 0 24 24" class="mail-icon" aria-hidden="true">
+    <path d="M4 6h16v12H4z" fill="none" stroke="currentColor" stroke-width="1.8" />
+    <path d="m5 7 7 6 7-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+`;
+
 function escapeHtml(value = '') {
   return String(value)
     .replaceAll('&', '&amp;')
@@ -5,6 +36,27 @@ function escapeHtml(value = '') {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
+}
+
+function normalizeHref(value = '') {
+  const href = String(value || '').trim();
+  if (!href) {
+    return '';
+  }
+
+  if (/^(#|\/|mailto:|tel:|https?:\/\/)/i.test(href)) {
+    return href;
+  }
+
+  if (/^[\w.-]+\.[a-z]{2,}(?:[/?#].*)?$/i.test(href)) {
+    return `https://${href}`;
+  }
+
+  return href;
+}
+
+function isExternalHref(value = '') {
+  return /^https?:\/\//i.test(value);
 }
 
 function renderRichText(text = '') {
@@ -16,28 +68,150 @@ function renderRichText(text = '') {
     .join('');
 }
 
-function renderLinks(items = []) {
+function buildLinkAttributes(href = '') {
+  const normalizedHref = normalizeHref(href);
+  if (!normalizedHref) {
+    return '';
+  }
+
+  return `href="${escapeHtml(normalizedHref)}"${isExternalHref(normalizedHref) ? ' target="_blank" rel="noreferrer"' : ''}`;
+}
+
+function renderSocialLinks(items = []) {
   return (items || [])
-    .filter((item) => item?.label && item?.url)
-    .map((item) => `<a href="${escapeHtml(item.url)}">${escapeHtml(item.label)}</a>`)
+    .filter((item) => item?.label && normalizeHref(item?.url))
+    .map((item) => `<a class="social-text-link" ${buildLinkAttributes(item.url)}>${escapeHtml(item.label)}</a>`)
+    .join('');
+}
+
+function getPrimarySocialLink(data) {
+  const instagramHref = normalizeHref(data.contact?.instagram);
+  if (instagramHref) {
+    return {
+      label: data.contact?.instagramLabel || 'Instagram',
+      url: instagramHref,
+    };
+  }
+
+  const fallback = (data.header?.socialLinks || []).find((item) => item?.label && normalizeHref(item.url));
+  if (!fallback) {
+    return null;
+  }
+
+  return {
+    label: fallback.label,
+    url: normalizeHref(fallback.url),
+  };
+}
+
+function renderHeaderSocialIcon(data) {
+  const firstSocial = (data.header?.socialLinks || []).find((item) => item?.label && normalizeHref(item.url));
+  if (!firstSocial) {
+    return '';
+  }
+
+  return `<a class="social-icon-button" ${buildLinkAttributes(firstSocial.url)} aria-label="${escapeHtml(firstSocial.label)}">${INSTAGRAM_ICON}</a>`;
+}
+
+function splitDateParts(value = '') {
+  const trimmed = String(value || '').trim();
+  if (!trimmed) {
+    return { primary: '', secondary: '' };
+  }
+
+  const match = trimmed.match(/^(\d{1,2})(?:\s+)(.*)$/);
+  if (!match) {
+    return { primary: trimmed, secondary: '' };
+  }
+
+  return {
+    primary: match[1],
+    secondary: match[2],
+  };
+}
+
+function getGalleryImages(data) {
+  const explicitImages = (data.gallery?.images || [])
+    .map((item) => ({
+      image: item?.image || '',
+      imageAlt: item?.imageAlt || '',
+    }))
+    .filter((item) => item.image);
+
+  if (explicitImages.length > 0) {
+    return explicitImages;
+  }
+
+  return [
+    {
+      image: data.about?.image || '',
+      imageAlt: data.about?.imageAlt || '',
+    },
+    {
+      image: data.hero?.image || '',
+      imageAlt: data.hero?.imageAlt || '',
+    },
+  ].filter((item) => item.image);
+}
+
+function renderGallery(data) {
+  const images = getGalleryImages(data);
+
+  if (images.length === 0) {
+    return `
+      <article class="gallery-card">
+        <div class="gallery-image-placeholder"><span>Lägg till bilder i CMS:et för att fylla galleriet.</span></div>
+      </article>
+    `;
+  }
+
+  return images
+    .map(
+      (item) => `
+        <article class="gallery-card hover-lift">
+          <img class="gallery-image" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.imageAlt || '')}" />
+        </article>
+      `,
+    )
     .join('');
 }
 
 function renderAgenda(items = []) {
+  if ((items || []).length === 0) {
+    return `
+      <article class="agenda-card">
+        <div class="agenda-date-panel">
+          <p class="agenda-date-primary">-</p>
+        </div>
+        <div class="agenda-card-body">
+          <h3>Inga evenemang just nu</h3>
+          <p class="agenda-description">Lägg till nästa spelning eller konsert i CMS:et.</p>
+        </div>
+      </article>
+    `;
+  }
+
   return (items || [])
     .map((item) => {
-      const link = item.buttonUrl
-        ? `<a class="agenda-link" href="${escapeHtml(item.buttonUrl)}">${escapeHtml(item.buttonLabel || 'Läs mer')}</a>`
+      const dateParts = splitDateParts(item.date || '');
+      const buttonHref = normalizeHref(item.buttonUrl || '');
+      const buttonMarkup = buttonHref
+        ? `<a class="agenda-link" ${buildLinkAttributes(buttonHref)}>${escapeHtml(item.buttonLabel || 'Läs mer')}</a>`
         : '';
 
       return `
-        <article class="agenda-item">
-          <div class="agenda-date">${escapeHtml(item.date || '')}</div>
-          <div class="agenda-content">
+        <article class="agenda-card hover-lift">
+          <div class="agenda-date-panel">
+            <div>
+              <p class="agenda-date-primary">${escapeHtml(dateParts.primary || item.date || '')}</p>
+              ${dateParts.secondary ? `<p class="agenda-date-secondary">${escapeHtml(dateParts.secondary)}</p>` : ''}
+            </div>
+          </div>
+          <div class="agenda-card-body">
             <h3>${escapeHtml(item.title || '')}</h3>
-            <p class="agenda-location">${escapeHtml(item.location || '')}</p>
+            <p class="agenda-place">${escapeHtml(item.location || '')}</p>
             <p class="agenda-description">${escapeHtml(item.description || '')}</p>
-            ${link}
+            ${buttonMarkup}
           </div>
         </article>
       `;
@@ -46,13 +220,14 @@ function renderAgenda(items = []) {
 }
 
 function buildPreviewHtml(data) {
-  const socials = renderLinks(data.header?.socialLinks || []);
-  const imageMarkup = data.hero?.image
-    ? `<img class="hero-image" src="${escapeHtml(data.hero.image)}" alt="${escapeHtml(data.hero?.imageAlt || '')}" />`
-    : `<div class="hero-image-placeholder"><span>Stor ensemblebild</span></div>`;
-  const featuredLink = data.hero?.featured?.buttonUrl
-    ? `<a class="button button-light" href="${escapeHtml(data.hero.featured.buttonUrl)}">${escapeHtml(data.hero.featured.buttonLabel || 'Läs mer')}</a>`
-    : '';
+  const primarySocial = getPrimarySocialLink(data);
+  const featuredLink = normalizeHref(data.hero?.featured?.buttonUrl || '');
+  const heroImageMarkup = data.hero?.image
+    ? `<img class="hero-banner-image" src="${escapeHtml(data.hero.image)}" alt="${escapeHtml(data.hero?.imageAlt || '')}" />`
+    : '<div class="hero-image-placeholder"><span>Stor ensemblebild</span></div>';
+  const aboutImageMarkup = data.about?.image
+    ? `<img class="about-image hover-lift" src="${escapeHtml(data.about.image)}" alt="${escapeHtml(data.about?.imageAlt || '')}" />`
+    : '<div class="about-image-placeholder"><span>Bild från repetition eller konsert</span></div>';
 
   return `<!doctype html>
 <html lang="sv">
@@ -64,82 +239,125 @@ function buildPreviewHtml(data) {
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <div class="site-shell">
-      <header class="site-header" id="top">
-        <a class="wordmark" href="#top">Vokalen</a>
-        <div class="header-right">
-          <nav class="site-nav" aria-label="Huvudmeny">
-            <a href="#about">Om oss</a>
-            <a href="#agenda">Kalender</a>
-            <a href="#contact">Kontakt</a>
-          </nav>
-          <div class="header-socials">${socials}</div>
-        </div>
+    <div class="page-shell">
+      <header class="site-header">
+        <nav class="site-nav-shell" aria-label="Huvudnavigering">
+          <a class="brand" href="#hem" aria-label="Vokalen startsida">
+            ${BOTANICAL_MARKUP}
+            <span class="brand-wordmark">Vokalen</span>
+          </a>
+
+          <div class="nav-cluster">
+            <div class="nav-links">
+              <a href="#om-oss">Om oss</a>
+              <a href="#kalender">Kalender</a>
+              <a href="#kontakt">Kontakt</a>
+            </div>
+
+            <div class="social-strip">
+              <div class="social-text-links">${renderSocialLinks(data.header?.socialLinks || [])}</div>
+              ${renderHeaderSocialIcon(data)}
+            </div>
+          </div>
+        </nav>
       </header>
 
-      <main>
-        <section class="hero-media">
-          <div class="hero-image-wrap">${imageMarkup}</div>
-        </section>
-
-        <section class="hero-copy">
-          <div class="hero-main">
-            <p class="eyebrow">${escapeHtml(data.hero?.eyebrow || '')}</p>
-            <h1>${escapeHtml(data.hero?.title || '')}</h1>
-            <div class="rich-text intro">${renderRichText(data.hero?.intro || '')}</div>
-            <div class="hero-actions">
-              <a class="button button-primary" href="${escapeHtml(data.hero?.primaryCtaHref || '#contact')}">${escapeHtml(data.hero?.primaryCtaLabel || 'Boka eller kontakta oss')}</a>
-              <a class="button button-secondary" href="${escapeHtml(data.hero?.secondaryCtaHref || '#agenda')}">${escapeHtml(data.hero?.secondaryCtaLabel || 'Se kalendern')}</a>
-            </div>
+      <main id="hem">
+        <section class="hero-section section-frame">
+          <div class="hero-banner organic-divider">
+            ${heroImageMarkup}
           </div>
 
-          <aside class="highlight-card">
-            <p class="card-kicker">${escapeHtml(data.hero?.featured?.eyebrow || 'Aktuellt')}</p>
-            <h2>${escapeHtml(data.hero?.featured?.title || '')}</h2>
-            <p class="card-meta">${escapeHtml(data.hero?.featured?.date || '')}</p>
-            <p class="card-meta">${escapeHtml(data.hero?.featured?.location || '')}</p>
-            <p class="card-body">${escapeHtml(data.hero?.featured?.body || '')}</p>
-            ${featuredLink}
-          </aside>
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <p class="script-kicker">${escapeHtml(data.hero?.eyebrow || 'Vokalen')}</p>
+              <h1>${escapeHtml(data.hero?.title || 'Vokalen')}</h1>
+              <div class="body-copy lead-copy">${renderRichText(data.hero?.intro || '')}</div>
+
+              <div class="button-row">
+                <a class="button button-primary" ${buildLinkAttributes(data.hero?.primaryCtaHref || '#kontakt')}>${escapeHtml(data.hero?.primaryCtaLabel || 'Boka eller kontakta oss')}</a>
+                <a class="button button-secondary" ${buildLinkAttributes(data.hero?.secondaryCtaHref || '#kalender')}>${escapeHtml(data.hero?.secondaryCtaLabel || 'Se mer')}</a>
+              </div>
+            </div>
+
+            <article class="highlight-panel">
+              <p class="section-kicker highlight-kicker">${escapeHtml(data.hero?.featured?.eyebrow || 'Nyhet!')}</p>
+              <h2>${escapeHtml(data.hero?.featured?.title || 'Kommande konsert')}</h2>
+              <p class="highlight-date">${escapeHtml(data.hero?.featured?.date || '')}</p>
+              <p class="highlight-location">${escapeHtml(data.hero?.featured?.location || '')}</p>
+              <p class="highlight-body">${escapeHtml(data.hero?.featured?.body || '')}</p>
+              ${featuredLink ? `<a class="button button-highlight" ${buildLinkAttributes(featuredLink)}>${escapeHtml(data.hero?.featured?.buttonLabel || 'Mer info')}</a>` : ''}
+            </article>
+          </div>
         </section>
 
-        <section class="section" id="about">
-          <div class="section-heading">
+        <section class="about-section section-frame" id="om-oss">
+          <div class="about-copy">
             <p class="section-kicker">Om oss</p>
-            <h2>${escapeHtml(data.about?.title || '')}</h2>
+            <h2>${escapeHtml(data.about?.title || 'Om oss')}</h2>
+            <div class="section-rule" aria-hidden="true"></div>
+            <div class="body-copy">${renderRichText(data.about?.body || '')}</div>
           </div>
-          <div class="rich-text section-copy">${renderRichText(data.about?.body || '')}</div>
+
+          <div class="about-visual">
+            ${aboutImageMarkup}
+            ${data.about?.badgeText ? `<div class="about-badge">${escapeHtml(data.about.badgeText)}</div>` : ''}
+          </div>
         </section>
 
-        <section class="section" id="agenda">
-          <div class="section-header split">
-            <div>
+        <section class="gallery-section section-frame" aria-label="Bildgalleri">
+          <div class="gallery-grid">${renderGallery(data)}</div>
+        </section>
+
+        <section class="agenda-section" id="kalender">
+          <div class="section-frame agenda-grid">
+            <div class="agenda-copy">
               <p class="section-kicker">Kalender</p>
-              <h2>${escapeHtml(data.agenda?.title || '')}</h2>
+              <h2>${escapeHtml(data.agenda?.title || 'Vår agenda')}</h2>
+              <p class="agenda-intro">${escapeHtml(data.agenda?.intro || '')}</p>
+              <div class="agenda-cards">${renderAgenda(data.agenda?.items || [])}</div>
             </div>
-            <p class="section-intro">${escapeHtml(data.agenda?.intro || '')}</p>
+
+            <div class="agenda-mark" aria-hidden="true">
+              <div class="agenda-mark-circle">
+                ${CALENDAR_ICON}
+                ${BOTANICAL_MARKUP}
+              </div>
+            </div>
           </div>
-          <div class="agenda-list">${renderAgenda(data.agenda?.items || [])}</div>
         </section>
 
-        <section class="contact-section" id="contact">
-          <div class="section-heading">
-            <p class="section-kicker">Kontakt</p>
-            <h2>${escapeHtml(data.contact?.title || '')}</h2>
-          </div>
-          <div class="contact-grid">
-            <div class="rich-text section-copy">${renderRichText(data.contact?.body || '')}</div>
-            <div class="contact-card">
-              <a class="contact-email" href="mailto:${escapeHtml(data.contact?.email || '')}">${escapeHtml(data.contact?.emailLabel || data.contact?.email || '')}</a>
-              <div class="contact-socials">${socials}</div>
+        <section class="contact-section section-frame" id="kontakt">
+          <div class="contact-panel">
+            <div class="contact-panel-left">
+              ${MAIL_ICON}
+              <p class="section-kicker contact-kicker">Kontakt</p>
+              <h2>${escapeHtml(data.contact?.title || 'Kontakt')}</h2>
+              <div class="body-copy contact-body">${renderRichText(data.contact?.body || '')}</div>
+            </div>
+
+            <div class="contact-panel-right">
+              <div>
+                <p class="contact-helper">Skicka ett mejl till oss</p>
+                <a class="contact-email" ${buildLinkAttributes(`mailto:${data.contact?.email || 'kontakt@vokalen.se'}`)}>${escapeHtml(data.contact?.emailLabel || data.contact?.email || 'kontakt@vokalen.se')}</a>
+              </div>
+
+              ${primarySocial ? `<a class="button button-secondary" ${buildLinkAttributes(primarySocial.url)}>${escapeHtml(primarySocial.label || 'Social länk')}</a>` : ''}
             </div>
           </div>
         </section>
       </main>
 
       <footer class="site-footer">
-        <p>${escapeHtml(data.footer?.note || '')}</p>
-        <a href="/admin/">Admin</a>
+        <div class="footer-inner">
+          <a class="brand footer-brand" href="#hem" aria-label="Tillbaka till toppen">
+            ${BOTANICAL_MARKUP}
+            <span class="brand-wordmark">Vokalen</span>
+          </a>
+
+          <p class="footer-note">${escapeHtml(data.footer?.note || 'Vokalen')}</p>
+          <a class="footer-admin" href="/admin/">Admin</a>
+        </div>
       </footer>
     </div>
   </body>

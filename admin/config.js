@@ -154,6 +154,27 @@ export function createCmsConfig({ apiBase = '', sessionToken = '', branch = reso
                 fields: [
                   { label: 'Rubrik', name: 'title', widget: 'string' },
                   { label: 'Text', name: 'body', widget: 'text' },
+                  { label: 'Bild', name: 'image', widget: 'image', required: false },
+                  { label: 'Bildtext', name: 'imageAlt', widget: 'string', required: false },
+                  { label: 'Rund badge-text', name: 'badgeText', widget: 'string', required: false },
+                ],
+              },
+              {
+                label: 'Bildgalleri',
+                name: 'gallery',
+                widget: 'object',
+                collapsed: false,
+                fields: [
+                  {
+                    label: 'Bilder',
+                    name: 'images',
+                    widget: 'list',
+                    summary: '{{fields.imageAlt}}',
+                    fields: [
+                      { label: 'Bild', name: 'image', widget: 'image' },
+                      { label: 'Bildtext', name: 'imageAlt', widget: 'string', required: false },
+                    ],
+                  },
                 ],
               },
               {
@@ -190,6 +211,8 @@ export function createCmsConfig({ apiBase = '', sessionToken = '', branch = reso
                   { label: 'Text', name: 'body', widget: 'text' },
                   { label: 'E-postadress', name: 'email', widget: 'string' },
                   { label: 'Text för e-postlänken', name: 'emailLabel', widget: 'string', required: false },
+                  { label: 'Social länk', name: 'instagram', widget: 'string', required: false },
+                  { label: 'Text för social knapp', name: 'instagramLabel', widget: 'string', required: false },
                 ],
               },
               {
