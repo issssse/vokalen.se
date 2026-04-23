@@ -8,8 +8,8 @@
     "body": "Om du har några frågor eller är intresserad av att boka oss för ett uppdrag, så skicka ett mejl till kontakt@vokalen.se! Vi är flexibla och skulle älska att få sjunga på din tillställning.",
     "email": "kontakt@vokalen.se",
     "emailLabel": "kontakt@vokalen.se",
-    "instagram": "https://www.instagram.com/vokalen9/",
-    "instagramLabel": "Öppna Instagram"
+    "instagram": "sendto:kontakt@vokalen.se",
+    "instagramLabel": "Hit us up!"
   },
   "footer": {
     "note": "Vokalen.se drivs som en statisk webbplats med GitHub Pages och Static CMS. Skapad av oss!"
