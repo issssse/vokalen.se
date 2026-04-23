@@ -5,17 +5,17 @@
   },
   "contact": {
     "title": "Kontakt",
-    "body": "Här kan ni lägga in bokningsinformation, mejladress och sociala medier.\n\nOm ni vill kan ni senare peka er Gmail till kontakt@vokalen.se.",
+    "body": "Om du har några frågor eller är intresserad av att boka oss för ett uppdrag, så skicka ett mejl till kontakt@vokalen.se! Vi är flexibla och skulle älska att få sjunga på din tillställning.",
     "email": "kontakt@vokalen.se",
     "emailLabel": "kontakt@vokalen.se",
     "instagram": "https://instagram.com/",
     "instagramLabel": "Öppna Instagram"
   },
   "footer": {
-    "note": "Vokalen.se drivs som en statisk webbplats med GitHub Pages och Static CMS. :D"
+    "note": "Vokalen.se drivs som en statisk webbplats med GitHub Pages och Static CMS. Skapad av oss!"
   },
   "hero": {
-    "image": "/images/uploads/250506-f-oc707-7003-1-.png",
+    "image": "/images/uploads/received_1469937901295429.jpeg",
     "eyebrow": "en till vokalensemble i uppsala!",
     "title": "Hejsan!",
     "intro": "Vi är en nystartad vokalensemble baserad i uppsala. Vi grundades november 2025 och består av 9 glada sångare! Kontakta oss direkt om du vill veta mer eller har några frågor.",
@@ -47,15 +47,15 @@
   },
   "agenda": {
     "title": "Vår agenda",
-    "intro": "Lite info",
+    "intro": "Inga bokningar syns här",
     "items": [
       {
-        "title": "En poster?",
-        "date": "1234",
-        "location": "Uppsala",
-        "description": "Beskrvningen är inte så lång.",
-        "buttonLabel": "Här har du en knapp!",
-        "buttonUrl": "vokalen.se"
+        "title": "Vårkonsert!",
+        "date": "7 jun 2026 kl. 17:00",
+        "location": "Eriksbergskyrkan Uppsala",
+        "description": "Kom och lyssna på oss på vårt första publika framträdande i Eriksbergskyrkan. Det kommer vara blandad reportuar med något för alla.",
+        "buttonLabel": "Fri entré!",
+        "buttonUrl": "https://fb.me/e/aHfZSvmTm"
       }
     ]
   }
