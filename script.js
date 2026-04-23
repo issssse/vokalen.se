@@ -1,6 +1,9 @@
 const CONTENT_URL = 'content/site.json';
 
 const elements = {
+  siteHeader: document.querySelector('.site-header'),
+  siteNavShell: document.querySelector('.site-nav-shell'),
+  heroSection: document.querySelector('.hero-section'),
   heroBanner: document.querySelector('.hero-banner'),
   heroImage: document.getElementById('hero-image'),
   heroImagePlaceholder: document.getElementById('hero-image-placeholder'),
@@ -41,6 +44,10 @@ const elements = {
   footerNote: document.getElementById('footer-note'),
 };
 
+const scrollState = {
+  ticking: false,
+};
+
 function escapeHtml(value = '') {
   return String(value)
     .replaceAll('&', '&amp;')
@@ -52,6 +59,10 @@ function escapeHtml(value = '') {
 
 function hasTextContent(value = '') {
   return String(value || '').trim().length > 0;
+}
+
+function clamp01(value) {
+  return Math.min(1, Math.max(0, value));
 }
 
 function normalizeHref(value = '') {
@@ -188,6 +199,39 @@ function applyHeroImage(url, alt = '', focusX, focusY) {
   }
 
   updateHeroImageFrame(elements.heroImage, focusX, focusY);
+}
+
+function syncHeaderHeight() {
+  const headerHeight = elements.siteHeader?.offsetHeight || elements.siteNavShell?.offsetHeight || 80;
+  document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
+}
+
+function syncScrollEffects() {
+  scrollState.ticking = false;
+
+  const headerProgress = clamp01(window.scrollY / 176);
+  document.documentElement.style.setProperty('--header-progress', headerProgress.toFixed(3));
+
+  if (!elements.heroSection) {
+    document.documentElement.style.setProperty('--hero-progress', '0');
+    return;
+  }
+
+  const heroTop = window.scrollY + elements.heroSection.getBoundingClientRect().top;
+  const heroStart = Math.max(0, heroTop - 72);
+  const heroDistance = Math.max(window.innerHeight * 0.86, 420);
+  const heroProgress = clamp01((window.scrollY - heroStart) / heroDistance);
+
+  document.documentElement.style.setProperty('--hero-progress', heroProgress.toFixed(3));
+}
+
+function scheduleScrollEffects() {
+  if (scrollState.ticking) {
+    return;
+  }
+
+  scrollState.ticking = true;
+  window.requestAnimationFrame(syncScrollEffects);
 }
 
 function renderRichText(target, text = '') {
@@ -524,4 +568,16 @@ async function loadSiteData() {
   }
 }
 
+window.addEventListener('scroll', scheduleScrollEffects, { passive: true });
+window.addEventListener('resize', () => {
+  syncHeaderHeight();
+  scheduleScrollEffects();
+});
+window.addEventListener('load', () => {
+  syncHeaderHeight();
+  scheduleScrollEffects();
+});
+
+syncHeaderHeight();
+scheduleScrollEffects();
 loadSiteData();
