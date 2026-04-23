@@ -16,26 +16,26 @@
   },
   "hero": {
     "image": "/images/uploads/250506-f-oc707-7003-1-.png",
-    "eyebrow": "Rubriken är liten",
-    "title": "Här är det jag vill ha sagt.",
-    "intro": "Vi är bra. Men inte bäst!",
-    "primaryCtaLabel": "En knapp",
-    "primaryCtaHref": "vokalen.se",
-    "secondaryCtaLabel": "En annan knapp",
-    "secondaryCtaHref": "vokalen.se",
+    "eyebrow": "en till vokalensemble i uppsala!",
+    "title": "Hejsan!",
+    "intro": "Vi är en nystartad vokalensemble baserad i uppsala. Vi grundades november 2025 och består av 9 glada sångare! Kontakta oss direkt om du vill veta mer eller har några frågor.",
+    "primaryCtaLabel": "Boka eller kontakta oss",
+    "primaryCtaHref": "mailto:kontakt@vokalen.se",
+    "secondaryCtaLabel": "Våran instagram",
+    "secondaryCtaHref": "https://www.instagram.com/vokalen9/",
     "featured": {
-      "eyebrow": "EN HIGHLIGHT",
-      "title": "Detta är jätteviktigt!",
-      "date": "2020",
-      "location": "Uppsala",
-      "body": "Hejsansvejsan kom och lek mned ooss",
-      "buttonLabel": "knapp",
-      "buttonUrl": "vokalen.se"
+      "eyebrow": "Nyhet!",
+      "title": "Våran Vårkonsert!",
+      "date": "7 jun 2026",
+      "location": "Eriksbergskyrkan Uppsala",
+      "body": "Detta blir våran första konsert för allmän publik, och det kan ni inte missa!",
+      "buttonLabel": "Mer info",
+      "buttonUrl": "https://fb.me/e/aHfZSvmTm"
     }
   },
   "about": {
-    "title": "Hejsan!",
-    "body": "Detta är lite grejer om oss bara."
+    "title": "Inte mycket historia... än!",
+    "body": "Vokalensemblen består av Ellen Skoog, Matilda Skeri, Sofie Olsson, Tuva Valman, Tyra Sund, Benjamin Winninge, David Svärd, Isac Carlsson, samt Joel Sarkadi Kristiansson. Fastän vi inte existerat länge har vi redan fått uppdrag att sjunga på ett par fester/konferenser. Att folk tycker om vad vi tycker så mycket om att skapa är jätterkul för oss, varför vi har beslutat att hålla en vårkonsert i juni. "
   },
   "header": {
     "socialLinks": [
@@ -46,7 +46,7 @@
     ]
   },
   "agenda": {
-    "title": "En kalender",
+    "title": "Vår agenda",
     "intro": "Lite info",
     "items": [
       {
