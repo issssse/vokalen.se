@@ -41,7 +41,7 @@
     "body": "Vokalensemblen består av Ellen Skoog, Matilda Skeri, Sofie Olsson, Tuva Valman, Tyra Sund, Benjamin Winninge, David Svärd, Isac Carlsson, samt Joel Sarkadi Kristiansson.\n\nFastän vi inte existerat länge har vi redan fått uppdrag att sjunga på ett par fester och konferenser. Att folk tycker om vad vi tycker så mycket om att skapa är jätterkul för oss, varför vi har beslutat att hålla en vårkonsert i juni.",
     "image": "/images/uploads/sheet-music.webp",
     "imageAlt": "Närbild på noter",
-    "badgeText": "Sång gemenskap glädje"
+    "badgeText": ""
   },
   "gallery": {
     "images": [
@@ -76,6 +76,12 @@
         "description": "Kom och lyssna på oss på vårt första publika framträdande i Eriksbergskyrkan. Det kommer vara blandad reportuar med något för alla.",
         "buttonLabel": "Fri entré!",
         "buttonUrl": "https://fb.me/e/aHfZSvmTm"
+      },
+      {
+        "title": "Sommarkonsert?",
+        "date": "TBA",
+        "location": "",
+        "description": "Vi planerar att ha ett event i sommar också, stay tuned och ha koll på våran instagram."
       }
     ]
   }
