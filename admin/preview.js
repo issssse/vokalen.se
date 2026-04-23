@@ -16,12 +16,6 @@ const INSTAGRAM_ICON = `
   </svg>
 `;
 
-const CALENDAR_ICON = `
-  <svg viewBox="0 0 24 24" class="calendar-icon">
-    <path d="M7 2v4M17 2v4M4 9h16M6 5h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-  </svg>
-`;
-
 const MAIL_ICON = `
   <svg viewBox="0 0 24 24" class="mail-icon" aria-hidden="true">
     <path d="M4 6h16v12H4z" fill="none" stroke="currentColor" stroke-width="1.8" />
@@ -36,6 +30,10 @@ function escapeHtml(value = '') {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
+}
+
+function hasTextContent(value = '') {
+  return String(value || '').trim().length > 0;
 }
 
 function normalizeHref(value = '') {
@@ -91,6 +89,16 @@ function renderSocialLinks(items = []) {
     .filter((item) => item?.label && normalizeHref(item?.url))
     .map((item) => `<a class="social-text-link" ${buildLinkAttributes(item.url)}>${escapeHtml(item.label)}</a>`)
     .join('');
+}
+
+function getSiteTitle(data) {
+  return data.meta?.title || 'Vokalen';
+}
+
+function renderBrandMark(data) {
+  return data.header?.logoImage
+    ? `<img class="brand-mark brand-mark-image" src="${escapeHtml(data.header.logoImage)}" alt="" />`
+    : BOTANICAL_MARKUP;
 }
 
 function buildHeroBannerStyle(hero = {}) {
@@ -232,8 +240,23 @@ function renderAgenda(items = []) {
     .join('');
 }
 
+function renderAgendaMark(data) {
+  if (!data.agenda?.markImage) {
+    return '';
+  }
+
+  return `
+    <div class="agenda-mark" aria-hidden="true">
+      <div class="agenda-mark-frame">
+        <img class="agenda-mark-image" src="${escapeHtml(data.agenda.markImage)}" alt="" />
+      </div>
+    </div>
+  `;
+}
+
 function buildPreviewHtml(data) {
   const primarySocial = getPrimarySocialLink(data);
+  const siteTitle = getSiteTitle(data);
   const featuredLink = normalizeHref(data.hero?.featured?.buttonUrl || '');
   const heroImageMarkup = data.hero?.image
     ? `<img class="hero-banner-image" src="${escapeHtml(data.hero.image)}" alt="${escapeHtml(data.hero?.imageAlt || '')}" />`
@@ -256,8 +279,8 @@ function buildPreviewHtml(data) {
       <header class="site-header">
         <nav class="site-nav-shell" aria-label="Huvudnavigering">
           <a class="brand" href="#hem" aria-label="Vokalen startsida">
-            ${BOTANICAL_MARKUP}
-            <span class="brand-wordmark">Vokalen</span>
+            ${renderBrandMark(data)}
+            <span class="brand-wordmark">${escapeHtml(siteTitle)}</span>
           </a>
 
           <div class="nav-cluster">
@@ -314,7 +337,7 @@ function buildPreviewHtml(data) {
 
           <div class="about-visual">
             ${aboutImageMarkup}
-            ${data.about?.badgeText ? `<div class="about-badge">${escapeHtml(data.about.badgeText)}</div>` : ''}
+            ${hasTextContent(data.about?.badgeText) ? `<div class="about-badge">${escapeHtml(String(data.about.badgeText).trim())}</div>` : ''}
           </div>
         </section>
 
@@ -330,13 +353,7 @@ function buildPreviewHtml(data) {
               <p class="agenda-intro">${escapeHtml(data.agenda?.intro || '')}</p>
               <div class="agenda-cards">${renderAgenda(data.agenda?.items || [])}</div>
             </div>
-
-            <div class="agenda-mark" aria-hidden="true">
-              <div class="agenda-mark-circle">
-                ${CALENDAR_ICON}
-                ${BOTANICAL_MARKUP}
-              </div>
-            </div>
+            ${renderAgendaMark(data)}
           </div>
         </section>
 
@@ -364,8 +381,8 @@ function buildPreviewHtml(data) {
       <footer class="site-footer">
         <div class="footer-inner">
           <a class="brand footer-brand" href="#hem" aria-label="Tillbaka till toppen">
-            ${BOTANICAL_MARKUP}
-            <span class="brand-wordmark">Vokalen</span>
+            ${renderBrandMark(data)}
+            <span class="brand-wordmark">${escapeHtml(siteTitle)}</span>
           </a>
 
           <p class="footer-note">${escapeHtml(data.footer?.note || 'Vokalen')}</p>

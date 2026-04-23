@@ -118,6 +118,11 @@ button:focus-visible {
   flex: 0 0 auto;
 }
 
+.brand-mark-image {
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
 .brand-wordmark,
 h1,
 h2,
@@ -522,11 +527,12 @@ main {
   position: absolute;
   top: -1.4rem;
   right: -1rem;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: clamp(7.5rem, 16vw, 9rem);
-  min-height: clamp(7.5rem, 16vw, 9rem);
-  padding: 1rem;
+  aspect-ratio: 1;
+  padding: 1rem 1.1rem;
   border-radius: 50%;
   background: var(--primary);
   color: var(--background);
@@ -534,6 +540,8 @@ main {
   font-size: clamp(1.8rem, 3vw, 2.4rem);
   line-height: 1.05;
   text-align: center;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
   box-shadow: var(--shadow);
   transform: rotate(12deg);
 }
@@ -676,30 +684,31 @@ main {
   justify-content: center;
 }
 
-.agenda-mark-circle {
+.agenda-mark-frame {
   position: relative;
-  display: grid;
-  place-items: center;
-  width: min(14rem, 100%);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: hsla(0 0% 100% / 0.72);
+  width: min(15rem, 100%);
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 42% 58% 48% 52% / 36% 44% 56% 64%;
+  background: linear-gradient(135deg, hsl(36 17% 90%), hsl(36 24% 98%));
   box-shadow: var(--shadow-soft);
-  color: var(--primary);
 }
 
-.calendar-icon {
+.agenda-mark-frame::after {
+  content: '';
   position: absolute;
-  top: 1.4rem;
-  left: 1.4rem;
-  width: 2rem;
-  height: 2rem;
-  color: var(--accent);
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, hsla(36 24% 96% / 0.04), hsla(36 24% 96% / 0.18)),
+    radial-gradient(circle at bottom center, hsla(36 24% 96% / 0.22), transparent 48%);
 }
 
-.agenda-mark-plant {
-  width: 4.5rem;
-  height: auto;
+.agenda-mark-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
 }
 
 .contact-section {
@@ -845,7 +854,7 @@ main {
   }
 
   .agenda-mark {
-    justify-content: flex-start;
+    display: none;
   }
 
   .about-badge {
@@ -890,7 +899,10 @@ main {
 
   .about-badge {
     top: auto;
-    bottom: -1rem;
+    right: auto;
+    bottom: -1.1rem;
+    left: 50%;
+    transform: translateX(-50%) rotate(8deg);
   }
 
   .contact-panel-left,

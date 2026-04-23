@@ -104,6 +104,13 @@ export function createCmsConfig({ apiBase = '', sessionToken = '', branch = reso
                 collapsed: false,
                 fields: [
                   {
+                    label: 'Logo-bild',
+                    name: 'logoImage',
+                    widget: 'image',
+                    required: false,
+                    hint: 'Om den lämnas tom används den befintliga illustrerade loggan.',
+                  },
+                  {
                     label: 'Sociala länkar',
                     name: 'socialLinks',
                     widget: 'list',
@@ -207,6 +214,13 @@ export function createCmsConfig({ apiBase = '', sessionToken = '', branch = reso
                 fields: [
                   { label: 'Rubrik', name: 'title', widget: 'string' },
                   { label: 'Kort intro', name: 'intro', widget: 'text', required: false },
+                  {
+                    label: 'Dekorativ bild bredvid agendan',
+                    name: 'markImage',
+                    widget: 'image',
+                    required: false,
+                    hint: 'Valfri dekorativ bild. Döljs automatiskt på mindre skärmar.',
+                  },
                   {
                     label: 'Poster',
                     name: 'items',

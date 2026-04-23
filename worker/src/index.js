@@ -8,6 +8,7 @@ const DEFAULT_CONTENT = {
         description: 'Vokalen är en vokalensemble med varm klang, närvaro och konserter som stannar kvar.',
       },
       header: {
+        logoImage: '',
         socialLinks: [
           {
             label: 'Instagram',
@@ -48,6 +49,7 @@ const DEFAULT_CONTENT = {
       agenda: {
         title: 'Kalender & agenda',
         intro: 'Kommande konserter och framträdanden.',
+        markImage: '',
         items: [
           {
             title: 'Vårkonsert',

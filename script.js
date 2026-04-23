@@ -4,6 +4,9 @@ const elements = {
   heroBanner: document.querySelector('.hero-banner'),
   heroImage: document.getElementById('hero-image'),
   heroImagePlaceholder: document.getElementById('hero-image-placeholder'),
+  headerLogoImage: document.getElementById('header-logo-image'),
+  headerLogoFallback: document.getElementById('header-logo-fallback'),
+  headerBrandName: document.getElementById('header-brand-name'),
   heroEyebrow: document.getElementById('hero-eyebrow'),
   heroTitle: document.getElementById('hero-title'),
   heroIntro: document.getElementById('hero-intro'),
@@ -26,10 +29,15 @@ const elements = {
   agendaTitle: document.getElementById('agenda-title'),
   agendaIntro: document.getElementById('agenda-intro'),
   agendaList: document.getElementById('agenda-list'),
+  agendaMark: document.getElementById('agenda-mark'),
+  agendaMarkImage: document.getElementById('agenda-mark-image'),
   contactTitle: document.getElementById('contact-title'),
   contactBody: document.getElementById('contact-body'),
   contactEmail: document.getElementById('contact-email'),
   contactSocialLink: document.getElementById('contact-social-link'),
+  footerLogoImage: document.getElementById('footer-logo-image'),
+  footerLogoFallback: document.getElementById('footer-logo-fallback'),
+  footerBrandName: document.getElementById('footer-brand-name'),
   footerNote: document.getElementById('footer-note'),
 };
 
@@ -40,6 +48,10 @@ function escapeHtml(value = '') {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
+}
+
+function hasTextContent(value = '') {
+  return String(value || '').trim().length > 0;
 }
 
 function normalizeHref(value = '') {
@@ -95,6 +107,28 @@ function applyImage(element, placeholder, url, alt = '') {
   element.alt = alt || '';
   element.classList.remove('hidden');
   placeholder.classList.add('hidden');
+}
+
+function applyImageWithoutPlaceholder(element, container, url, alt = '') {
+  if (!element || !container) {
+    return;
+  }
+
+  if (!url) {
+    container.classList.add('hidden');
+    element.removeAttribute('src');
+    element.alt = '';
+    return;
+  }
+
+  element.src = url;
+  element.alt = alt || '';
+  element.onerror = () => {
+    container.classList.add('hidden');
+    element.removeAttribute('src');
+    element.alt = '';
+  };
+  container.classList.remove('hidden');
 }
 
 function clampPercent(value, fallback) {
@@ -206,6 +240,43 @@ function getPrimarySocialLink(data) {
     label: fallback.label,
     url: normalizeHref(fallback.url),
   };
+}
+
+function getSiteTitle(data) {
+  return data.meta?.title || 'Vokalen';
+}
+
+function applyBrandImage(imageElement, fallbackElement, imageUrl) {
+  if (!imageElement || !fallbackElement) {
+    return;
+  }
+
+  if (!imageUrl) {
+    imageElement.classList.add('hidden');
+    imageElement.removeAttribute('src');
+    fallbackElement.classList.remove('hidden');
+    return;
+  }
+
+  imageElement.onerror = () => {
+    imageElement.classList.add('hidden');
+    imageElement.removeAttribute('src');
+    fallbackElement.classList.remove('hidden');
+  };
+  imageElement.src = imageUrl;
+  imageElement.classList.remove('hidden');
+  fallbackElement.classList.add('hidden');
+}
+
+function applyBranding(data) {
+  const siteTitle = getSiteTitle(data);
+  const logoImage = data.header?.logoImage || '';
+
+  elements.headerBrandName.textContent = siteTitle;
+  elements.footerBrandName.textContent = siteTitle;
+
+  applyBrandImage(elements.headerLogoImage, elements.headerLogoFallback, logoImage);
+  applyBrandImage(elements.footerLogoImage, elements.footerLogoFallback, logoImage);
 }
 
 function renderHeaderSocials(data) {
@@ -397,16 +468,18 @@ function applySiteData(data) {
   setButtonLink(elements.heroSecondaryCta, data.hero?.secondaryCtaLabel, data.hero?.secondaryCtaHref, 'Se mer', '#kalender');
 
   renderHeaderSocials(data);
+  applyBranding(data);
   applyFeatured(data.hero?.featured || {});
 
   elements.aboutTitle.textContent = data.about?.title || 'Om oss';
   renderRichText(elements.aboutBody, data.about?.body || '');
   applyImage(elements.aboutImage, elements.aboutImagePlaceholder, data.about?.image || '', data.about?.imageAlt || '');
 
-  if (data.about?.badgeText) {
-    elements.aboutBadge.textContent = data.about.badgeText;
+  if (hasTextContent(data.about?.badgeText)) {
+    elements.aboutBadge.textContent = String(data.about.badgeText).trim();
     elements.aboutBadge.classList.remove('hidden');
   } else {
+    elements.aboutBadge.textContent = '';
     elements.aboutBadge.classList.add('hidden');
   }
 
@@ -415,6 +488,7 @@ function applySiteData(data) {
   elements.agendaTitle.textContent = data.agenda?.title || 'Vår agenda';
   elements.agendaIntro.textContent = data.agenda?.intro || '';
   renderAgenda(data.agenda?.items || []);
+  applyImageWithoutPlaceholder(elements.agendaMarkImage, elements.agendaMark, data.agenda?.markImage || '', '');
 
   elements.contactTitle.textContent = data.contact?.title || 'Kontakt';
   renderRichText(elements.contactBody, data.contact?.body || '');
